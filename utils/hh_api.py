@@ -31,7 +31,7 @@ class HeadHunterAPI(AbstractAPi):
         self.api_url = "https://api.hh.ru/vacancies?employer_id="
         self.params = {
             "pages": 0,
-            "per_page": 100,
+            "per_page": 50,
             "only_with_vacancies": True
         }
 

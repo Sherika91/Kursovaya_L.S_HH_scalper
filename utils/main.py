@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from config import config
 import psycopg2
 from dbmanager import DBManager
@@ -31,7 +29,7 @@ def main():
 
                 insert_companies_data(cur, vacancies)
                 print("Data was inserted successfully in table companies")
-
+                conn.commit()
                 print("\nChose command to continue.\n"
                       "1. - Returns a list of all vacancies.\n"
                       "2. - Returns a list of companies and the number of vacancies in each of them.\n"
@@ -49,9 +47,9 @@ def main():
                     elif command == "3":
                         DBManager.get_avg_salary_by_company(cur)
                     elif command == "4":
-                        DBManager.get_vacancies_with_keyword(cur, input("Enter Search Query: "))
-                    elif command == "5":
                         DBManager.get_vacancies_with_higher_salary(cur, input("Enter salary: "))
+                    elif command == "5":
+                        DBManager.get_vacancies_with_keyword(cur, input("Enter Search Query: "))
                     elif command == "0":
                         exit(0)
                     else:
@@ -98,8 +96,9 @@ def insert_vacancies_data(cur, vacancies: list[dict]) -> None:
                             "VALUES (%s, %s, %s, %s, %s)", (vacancy['name'], 0, 0, "null", vacancy['area']['name']))
 
             else:
-                cur.execute("INSERT INTO vacancies (name, salary_min, salary_max, salary_currency, city)"
-                            "VALUES (%s, %s, %s, %s, %s)", (vacancy['name'],
+                cur.execute("INSERT INTO vacancies (vacancy_id_hh, name, salary_min, salary_max, salary_currency, city)"
+                            "VALUES (%s, %s, %s, %s, %s, %s)", (vacancy['id'],
+                                                            vacancy['name'],
                                                             vacancy['salary']['from'] if vacancy['salary'][
                                                                                              'from'] is not None else 0,
                                                             vacancy['salary']['to'] if vacancy['salary'][
