@@ -1,5 +1,4 @@
 import psycopg2
-from utils.config import config
 
 
 def create_database(params: dict, dbname: str) -> None:
@@ -64,4 +63,3 @@ def insert_companies_data(cur, companies: list[dict]) -> None:
     for company in companies:
         cur.execute("INSERT INTO companies (company_id ,company_name, company_url) "
                     "VALUES (%s, %s, %s)", (company['id'], company['name'], company['alternate_url']))
-

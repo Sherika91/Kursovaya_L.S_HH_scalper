@@ -1,6 +1,4 @@
 from configparser import ParsingError
-from pprint import pprint
-
 import requests
 from abc import ABC, abstractmethod
 
@@ -31,7 +29,7 @@ class HeadHunterAPI(AbstractAPi):
         self.api_url = "https://api.hh.ru/vacancies?employer_id="
         self.params = {
             "pages": 0,
-            "per_page": 50,
+            "per_page": 100,
             "only_with_vacancies": True
         }
 
@@ -49,3 +47,11 @@ class HeadHunterAPI(AbstractAPi):
                 self.params["pages"] += 1
 
         return vacancies
+
+    @staticmethod
+    def get_companies():
+        companies = []
+        for company in COMPANIES.values():
+            response = requests.get(f"https://api.hh.ru/employers/{company}").json()
+            companies.append(response)
+        return companies
